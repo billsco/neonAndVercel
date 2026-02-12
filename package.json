@@ -1,0 +1,38 @@
+{
+  "name": "neon-and-vercel-spike",
+  "version": "1.0.0",
+  "description": "Spike of an end-to-end with a Next app on Vercel reading/writing from Neon.   Also I'll make this public (to learn more stuff), but hopefully I won't have to learn secrets management in a hurry",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billsco/neonAndVercel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/billsco/neonAndVercel/issues"
+  },
+  "homepage": "https://github.com/billsco/neonAndVercel#readme",
+  "private": true,
+  "dependencies": {
+    "next": "^15.5.12",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^15.5.12",
+    "typescript": "^5.9.3"
+  }
+}
