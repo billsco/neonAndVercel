@@ -167,3 +167,45 @@ curl http://localhost:3000/api/messages
 
 1. Do not commit `.env.local`.
 2. Keep this spike intentionally minimal; optimize for learning and repeatability over architecture polish.
+
+## Spike Summary
+
+### 1) Schema + migration approach
+
+1. Schema is SQL-first and intentionally minimal for the spike.
+2. Migration file: `migrations/001_create_messages.sql`.
+3. Table created:
+   1. `messages.id` as `bigserial primary key`
+   2. `messages.text` as `text not null`
+   3. `messages.created_at` as `timestamptz not null default now()`
+4. Migration execution pattern:
+   1. Manual apply from local machine with `psql`
+   2. Command: `psql "$DATABASE_URL" -f migrations/001_create_messages.sql`
+
+### 2) Connection method used
+
+1. Driver: Neon serverless driver (`@neondatabase/serverless`).
+2. Dependency location: `package.json` under `"dependencies"`.
+3. Configuration pattern:
+   1. Env var: `DATABASE_URL`
+   2. Helper module: `lib/db.ts`
+   3. `getSql()` lazily initializes Neon client with `neon(process.env.DATABASE_URL)`.
+4. Endpoint usage:
+   1. `app/api/messages/route.ts` imports `getSql()`
+   2. Executes parameterized SQL for `GET` (read) and `POST` (write).
+
+### 3) Vercel DB connection configuration/storage
+
+1. In Vercel project: `Settings` -> `Environment Variables`.
+2. Add variable:
+   1. Name: `DATABASE_URL`
+   2. Value: Neon connection string (prefer pooled string for serverless).
+3. Scope:
+   1. Set for `Production`
+   2. Optionally set for `Preview` and `Development` if needed.
+4. Storage model:
+   1. Stored as encrypted project env vars in Vercel.
+   2. Not committed in git.
+5. Runtime behavior:
+   1. Next.js API routes read `process.env.DATABASE_URL` at runtime.
+   2. New/updated env vars require redeploy to take effect.
